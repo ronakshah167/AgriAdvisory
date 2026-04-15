@@ -177,10 +177,11 @@
                 resPanel.style.display = "none";
                 placeholder.style.display = "none";
 
-                setTimeout(() => {
+                setTimeout(async () => {
                     loader.style.display = "none";
                     const type = document.getElementById("soil-type").value;
                     const ph = parseFloat(document.getElementById("soil-ph").value) || 6.5;
+                    const nitrogen = parseFloat(document.getElementById("soil-nit").value) || null;
 
                     let crop = "Paddy (Rice)";
                     let desc = "Ideal for alluvial loamy soils with high moisture retention. Your Nitrogen level indicates strong vegetative potential.";
@@ -201,8 +202,28 @@
                     document.getElementById("soil-result-desc").innerText = desc;
                     document.getElementById("soil-result-icon").innerHTML = icon;
                     resPanel.style.display = "block";
+
+                    // Save to database
+                    try {
+                        const farmerId = getCookie('farmerId') || '';
+                        const body = [
+                            `farmer_id=${encodeURIComponent(farmerId)}`,
+                            `soil_type=${encodeURIComponent(type)}`,
+                            `ph_value=${encodeURIComponent(ph)}`,
+                            `nitrogen_mg_kg=${encodeURIComponent(nitrogen || '')}`,
+                            `recommended_crop=${encodeURIComponent(crop)}`,
+                            `recommendation_note=${encodeURIComponent(desc)}`
+                        ].join('&');
+                        await fetch('save_soil_test.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: body
+                        });
+                    } catch (err) {
+                        console.warn('Soil test not saved to DB (offline?):', err);
+                    }
                 }, 1200);
-            }
+            };
         }
     </script>
 </body>

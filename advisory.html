@@ -7,6 +7,81 @@
     <meta name="description" content="Expert agricultural advisory and crop management tips on AgriAdvisory Hub.">
     <title>Expert Advisory — AgriAdvisory Hub</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .experts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .expert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 22px;
+            transition: var(--transition-fast);
+        }
+
+        .expert-card:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        .expert-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent-primary);
+            background: rgba(45, 106, 79, 0.08);
+            border-radius: 4px;
+            padding: 3px 9px;
+            margin-bottom: 10px;
+        }
+
+        .expert-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .expert-qual {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .expert-meta {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .expert-exp {
+            font-size: 0.78rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .request-form-wrap {
+            max-width: 620px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -76,18 +151,136 @@
     </div>
 
     <div class="section">
-        <h2>Expert Consultation</h2>
-        <p>Need specific help? Connect with our certified agricultural scientists for a personlized session.</p>
-        <div style="margin-top: 24px;">
-            <a href="register.html" class="btn-outline-link"
-                style="display:inline-block; text-decoration:none; padding: 12px 30px; border: 1px solid var(--accent-primary); color: var(--accent-primary); border-radius: 8px; font-weight: 600;">Request
-                Expert Call</a>
+        <h2>Our Agricultural Experts</h2>
+        <p>Connect with our certified scientists for personalised crop consultation.</p>
+        <div id="experts-grid" class="experts-grid">
+            <p style="color: var(--text-muted);">Loading experts...</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Request Expert Consultation</h2>
+        <p style="margin-bottom: 24px;">Fill in the form below and one of our experts will reach out to you within 24
+            hours.</p>
+        <div class="request-form-wrap">
+            <form id="advisory-form">
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="adv-name">Full Name</label>
+                        <input type="text" id="adv-name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adv-phone">Phone Number</label>
+                        <input type="text" id="adv-phone" placeholder="+91 XXXXX XXXXX" required>
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="adv-email">Email</label>
+                        <input type="email" id="adv-email" placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="adv-crop">Crop Type</label>
+                        <input type="text" id="adv-crop" placeholder="e.g. Paddy, Cotton">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="adv-issue">Describe Your Issue</label>
+                    <textarea id="adv-issue" rows="4"
+                        placeholder="Describe the problem you are facing with your farm or crop..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="adv-date">Preferred Consultation Date</label>
+                    <input type="date" id="adv-date">
+                </div>
+                <button type="submit" id="adv-submit-btn">Submit Request</button>
+            </form>
+            <p id="adv-msg" style="margin-top: 14px; color: var(--accent-primary); font-weight: 500;"></p>
         </div>
     </div>
 
     <footer>
         <p>&copy; 2026 AgriAdvisory Hub. Built for farmers, by farmers.</p>
     </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load experts from database
+        (async function loadExperts() {
+            const grid = document.getElementById('experts-grid');
+            try {
+                const res = await fetch('get_advisory.php');
+                const data = await res.json();
+
+                if (!data || data.length === 0) {
+                    grid.innerHTML = '<p style="color:var(--text-muted);">No experts listed yet.</p>';
+                    return;
+                }
+
+                grid.innerHTML = '';
+                data.forEach(expert => {
+                    const card = document.createElement('div');
+                    card.className = 'expert-card';
+                    card.innerHTML = `
+                        <div class="expert-badge">${expert.specialisation || 'Agriculture'}</div>
+                        <div class="expert-name">${expert.name}</div>
+                        <div class="expert-qual">${expert.qualification || ''}</div>
+                        <div class="expert-meta">📍 ${expert.state_coverage || 'Pan India'}</div>
+                        <div class="expert-exp">${expert.experience_yrs} yrs experience</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                grid.innerHTML = '<p style="color:var(--text-muted);">Could not load experts. Please ensure the database is running.</p>';
+            }
+        })();
+
+        // Advisory consultation request form
+        const advisoryForm = document.getElementById('advisory-form');
+        if (advisoryForm) {
+            advisoryForm.onsubmit = async function (e) {
+                e.preventDefault();
+                const btn = document.getElementById('adv-submit-btn');
+                btn.innerText = 'Submitting...';
+                btn.disabled = true;
+
+                const farmerId = getCookie('farmerId') || '';
+                const body = [
+                    `farmer_id=${encodeURIComponent(farmerId)}`,
+                    `farmer_name=${encodeURIComponent(document.getElementById('adv-name').value.trim())}`,
+                    `farmer_phone=${encodeURIComponent(document.getElementById('adv-phone').value.trim())}`,
+                    `farmer_email=${encodeURIComponent(document.getElementById('adv-email').value.trim())}`,
+                    `crop_type=${encodeURIComponent(document.getElementById('adv-crop').value.trim())}`,
+                    `issue_desc=${encodeURIComponent(document.getElementById('adv-issue').value.trim())}`,
+                    `preferred_date=${encodeURIComponent(document.getElementById('adv-date').value)}`
+                ].join('&');
+
+                try {
+                    const res = await fetch('request_advisory.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: body
+                    });
+                    const result = await res.json();
+                    const msg = document.getElementById('adv-msg');
+
+                    if (result.status === 'success') {
+                        msg.innerText = '✅ Request submitted! Our expert will contact you within 24 hours.';
+                        advisoryForm.reset();
+                        showToast('Consultation request saved.');
+                    } else {
+                        msg.innerText = result.message || 'Something went wrong.';
+                        showToast('Request failed. Please try again.');
+                    }
+                } catch (err) {
+                    showToast('Network error. Please check your connection.');
+                } finally {
+                    btn.innerText = 'Submit Request';
+                    btn.disabled = false;
+                }
+            };
+        }
+    </script>
 
 </body>
 

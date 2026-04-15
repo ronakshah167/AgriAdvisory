@@ -255,10 +255,13 @@ if (registrationForm) {
                 registrationForm.reset();
                 showToast("Account created successfully.");
 
-                // Save farmer name in a cookie (30-day expiry) for welcome-back greeting
+                // Save farmer name + id cookies (30-day expiry) for welcome-back greeting
                 if (getCookie("cookieConsent") === "accepted") {
                     setCookie("farmerName", name, 30);
+                    // farmer_id comes back in a separate header or we auto-login;
+                    // for registration we keep it minimal and redirect to login
                 }
+                setTimeout(() => location.href = "login.html", 1800);
             } else {
                 msgEl.innerText = "Registration failed. Please try again.";
                 showToast("Error during registration. Please try again.");
@@ -307,9 +310,13 @@ if (loginForm) {
             if (result.status === "success") {
                 showToast("Welcome back, " + result.name + "!");
 
-                // Save identification cookie
+                // Save identification cookies
                 if (getCookie("cookieConsent") === "accepted" || remember) {
                     setCookie("farmerName", result.name, remember ? 30 : 1);
+                    // Store farmer_id for DB-connected features
+                    if (result.farmer_id) {
+                        setCookie("farmerId", result.farmer_id, remember ? 30 : 1);
+                    }
                 }
 
                 // Redirect after a short delay
@@ -346,7 +353,7 @@ if (privacyForm) {
     document.getElementById("weather-sms").checked = savedSettings.weatherSMS;
     document.getElementById("store-cookies").checked = savedSettings.storeCookies;
 
-    privacyForm.onsubmit = function (e) {
+    privacyForm.onsubmit = async function (e) {
         e.preventDefault();
 
         const settings = {
@@ -355,11 +362,33 @@ if (privacyForm) {
             storeCookies: document.getElementById("store-cookies").checked
         };
 
+        // Save locally
         localStorage.setItem("privacySettings", JSON.stringify(settings));
 
         if (!settings.storeCookies) {
             deleteCookie("farmerName");
+            deleteCookie("farmerId");
             setCookie("cookieConsent", "declined", 30);
+        }
+
+        // Persist to database if logged in
+        const farmerId = getCookie("farmerId");
+        if (farmerId) {
+            try {
+                const body = [
+                    `farmer_id=${encodeURIComponent(farmerId)}`,
+                    `share_soil=${settings.shareSoil ? 'on' : ''}`,
+                    `weather_sms=${settings.weatherSMS ? 'on' : ''}`,
+                    `store_cookies=${settings.storeCookies ? 'on' : ''}`
+                ].join('&');
+                await fetch('save_privacy.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: body
+                });
+            } catch (err) {
+                console.warn('Privacy sync to DB failed (offline?):', err);
+            }
         }
 
         const msg = document.getElementById("privacy-msg");
@@ -551,7 +580,7 @@ if (orderForm) {
 
         const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
         const itemsJSON = JSON.stringify(cart.map(i => ({ name: i.name, price: i.price })));
-        const fullAddress = `${custAddress} | Payment: ${payMode}`;
+        const farmerId = getCookie("farmerId") || '';
 
         try {
             const res = await fetch("place_order.php", {
@@ -560,9 +589,11 @@ if (orderForm) {
                 body: [
                     `customer_name=${encodeURIComponent(custName)}`,
                     `phone=${encodeURIComponent(custPhone)}`,
-                    `address=${encodeURIComponent(fullAddress)}`,
+                    `address=${encodeURIComponent(custAddress)}`,
                     `items=${encodeURIComponent(itemsJSON)}`,
-                    `total=${total}`
+                    `total=${total}`,
+                    `payment_mode=${encodeURIComponent(payMode)}`,
+                    `farmer_id=${encodeURIComponent(farmerId)}`
                 ].join("&")
             });
 
