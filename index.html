@@ -16,53 +16,96 @@
     <a href="index.html" class="active">Home</a>
     <a href="register.html">Register</a>
     <a href="products.html">Products</a>
+    <a href="advisory.html">Advisory</a>
+    <a href="weather.html">Weather</a>
+    <a href="soil.html">Soil Test</a>
     <a href="checkout.html">Cart</a>
   </nav>
 
   <header>
-    <span class="badge">Smart Agriculture Platform</span>
-    <h1>AgriAdvisory Hub</h1>
-    <p>Your Smart Farming Assistant</p>
+    <div style="max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
+      <span class="badge"
+        style="background: rgba(168, 123, 40, 0.2); color: var(--accent-earth); border-color: rgba(168, 123, 40, 0.3);">Supporting
+        Sustainable Farming</span>
+      <h1>From Soil to Harvest,<br><span style="color: var(--text-primary);">We've Got You Covered.</span></h1>
+      <p style="margin-bottom: 30px;">Empowering India's farmers with data-driven crop intelligence and a premium
+        agricultural marketplace.</p>
+
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <button onclick="location.href='soil.html'"
+          style="padding: 16px 36px; font-size: 1.05rem; border-radius: 50px;">
+          Start Soil Test
+        </button>
+        <a href="products.html"
+          style="padding: 16px 36px; text-decoration: none; color: var(--accent-primary); border: 1px solid var(--accent-primary); border-radius: 50px; font-weight: 600; background: rgba(52, 211, 153, 0.05); transition: 0.3s; font-size: 1rem;">
+          Shop Marketplace
+        </a>
+      </div>
+    </div>
   </header>
 
-  <div class="section">
-    <h2>Welcome, Farmer</h2>
-    <p>
-      AgriAdvisory Hub empowers farmers with intelligent crop recommendations,
-      seamless farm registration, and a curated marketplace for essential
-      agricultural products — all in one place.
-    </p>
+  <!-- THE FARMER JOURNEY -->
+  <div class="section" style="background: none; border: none; box-shadow: none; padding: 0 20px;">
+    <h2 style="justify-content: center; font-size: 1.8rem; letter-spacing: -0.5px; opacity: 0.9; margin-bottom: 40px;">
+      The Harvest Cycle</h2>
+    <div class="features" style="gap: 12px;">
+      <div style="text-align: center; flex: 1; padding: 20px; border-radius: 12px;">
+        <span style="font-size: 1.5rem; display: block; margin-bottom: 12px;">🌱</span>
+        <h4 style="color: var(--accent-primary); margin-bottom: 8px;">Analysis</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Predict crops through soil testing</p>
+      </div>
+      <div style="text-align: center; flex: 0.4; opacity: 0.2;">→</div>
+      <div style="text-align: center; flex: 1; padding: 20px; border-radius: 12px;">
+        <span style="font-size: 1.5rem; display: block; margin-bottom: 12px;">🛒</span>
+        <h4 style="color: var(--accent-primary); margin-bottom: 8px;">Sourcing</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Get quality seeds & fertilizers</p>
+      </div>
+      <div style="text-align: center; flex: 0.4; opacity: 0.2;">→</div>
+      <div style="text-align: center; flex: 1; padding: 20px; border-radius: 12px;">
+        <span style="font-size: 1.5rem; display: block; margin-bottom: 12px;">☀️</span>
+        <h4 style="color: var(--accent-primary); margin-bottom: 8px;">Monitoring</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Follow live weather advisory</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top: 60px;">
+    <h2 style="margin-bottom: 12px;">Intelligent Agriculture Platform</h2>
+    <p style="margin-bottom: 40px;">Data-driven ecosystem built to maximize yield and minimize chemical risk.</p>
 
     <div class="features">
-      <div class="feature-card">
+      <div class="feature-card" onclick="location.href='soil.html'" style="cursor: pointer;">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20" />
+            <path d="m5 10 7 7 7-7" />
+          </svg>
+        </div>
+        <h3>Soil Chemistry</h3>
+        <p>Expert soil-to-seed matching logic for balanced farm nutrition.</p>
+        <span
+          style="font-size: 0.8rem; color: var(--accent-primary); font-weight: 700; margin-top: 16px; display: block;">TEST
+          NOW →</span>
+      </div>
+
+      <div class="feature-card" onclick="location.href='weather.html'" style="cursor: pointer;">
         <div class="feature-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2a10 10 0 0 1 10 10" />
             <path d="M2 12C2 6.48 6.48 2 12 2" />
             <path d="M7 20.7a10 10 0 0 0 10-17.4" />
-            <path d="M12 22v-4" />
-            <path d="M12 6v4l3 3" />
           </svg>
         </div>
-        <h3>Crop Recommendations</h3>
-        <p>Get data-driven insights tailored to your soil, climate, and region for maximum yield.</p>
+        <h3>Weather Satellite</h3>
+        <p>Live trackers to plan your irrigation and fertilizer application cycles.</p>
+        <span
+          style="font-size: 0.8rem; color: var(--accent-primary); font-weight: 700; margin-top: 16px; display: block;">CHECK
+          WEATHER →</span>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="16" y1="13" x2="8" y2="13" />
-            <line x1="16" y1="17" x2="8" y2="17" />
-            <polyline points="10 9 9 9 8 9" />
-          </svg>
-        </div>
-        <h3>Farm Registration</h3>
-        <p>Register your farm profile and access personalized advisory services effortlessly.</p>
-      </div>
-      <div class="feature-card">
+
+      <div class="feature-card" onclick="location.href='products.html'" style="cursor: pointer;">
         <div class="feature-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -72,20 +115,56 @@
           </svg>
         </div>
         <h3>Agri Marketplace</h3>
-        <p>Browse and purchase seeds, fertilizers, and tools from verified suppliers.</p>
+        <p>Browse seeds, fertilizers, and tools from verified premium suppliers.</p>
+        <span
+          style="font-size: 0.8rem; color: var(--accent-primary); font-weight: 700; margin-top: 16px; display: block;">BROWSE
+          SHOP →</span>
       </div>
-      <div class="feature-card">
+
+      <div class="feature-card" onclick="location.href='advisory.html'" style="cursor: pointer;">
         <div class="feature-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
             <circle cx="9" cy="7" r="4" />
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
         </div>
-        <h3>Expert Advisory</h3>
-        <p>Connect with agricultural experts for soil testing and crop consultation.</p>
+        <h3>Scientist Access</h3>
+        <p>Direct portal to agricultural scientists for personalized crop consultations.</p>
+        <span
+          style="font-size: 0.8rem; color: var(--accent-primary); font-weight: 700; margin-top: 16px; display: block;">TALK
+          TO EXPERT →</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section"
+    style="background: var(--bg-primary); border-top: 5px solid var(--accent-earth); padding: 50px 40px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+      <div>
+        <h2 style="font-size: 2rem; color: var(--text-primary);">Protect Your Livelihood</h2>
+        <p style="margin-top: 16px; color: var(--text-secondary); line-height: 1.8;">Our expert scientists analyze soil
+          chemistries and satellite weather data to ensure your farm stays productive, regardless of shifting monsoon
+          patterns.</p>
+        <button onclick="location.href='register.html'" style="margin-top: 24px; padding: 14px 40px;">Register Your
+          Farm</button>
+      </div>
+      <div>
+        <div
+          style="background: var(--bg-glass); border-radius: var(--radius-lg); padding: 30px; border: 1px solid var(--border-color);">
+          <div style="color: var(--accent-earth); font-size: 2rem; margin-bottom: 20px;">"</div>
+          <p style="font-style: italic; font-size: 1.1rem; color: var(--text-primary);">"Ever since using the soil test
+            recommendations, our paddy yield has increased by nearly 30% while reducing fertilizer costs by half."</p>
+          <div style="margin-top: 24px; display: flex; align-items: center; gap: 12px;">
+            <div
+              style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-primary); display:flex; align-items:center; justify-content:center; color: var(--bg-primary); font-weight:bold;">
+              RS</div>
+            <div>
+              <div style="font-weight: 600; font-size: 0.95rem;">Rahul S.</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Maharashtra, India</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

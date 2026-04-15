@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Live weather dashboard for agriculture optimization.">
+    <title>Live Weather — AgriAdvisory Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .weather-hero {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .main-weather {
+            padding: 40px;
+            text-align: left;
+            position: relative;
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(16, 185, 129, 0.05));
+            border: 1px solid var(--border-glow);
+        }
+
+        .weather-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--accent-primary);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .live-clock {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-family: monospace;
+        }
+
+        .forecast-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .forecast-card {
+            background: var(--bg-glass);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .forecast-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            background: var(--bg-card);
+        }
+
+        .forecast-day {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .forecast-temp {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        @media (max-width: 768px) {
+            .weather-hero {
+                grid-template-columns: 1fr;
+            }
+
+            .forecast-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="products.html">Products</a>
+        <a href="advisory.html">Advisory</a>
+        <a href="weather.html" class="active">Weather</a>
+        <a href="soil.html">Soil Test</a>
+        <a href="checkout.html">Cart</a>
+    </nav>
+
+    <header class="header-slim">
+        <span class="badge">Live Satellite View</span>
+        <h1>Atmospheric Intelligence</h1>
+        <p>Pre-harvest and irrigation planning dashboard</p>
+    </header>
+
+    <div class="section" style="max-width: 1100px; background: none; border: none; box-shadow: none;">
+
+        <div class="weather-hero">
+            <div class="section main-weather" style="margin: 0;">
+                <div class="live-indicator">Live From Tracker</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <div>
+                        <h2 id="city-name" style="margin-bottom: 4px;">Bangalore, Karnataka</h2>
+                        <div id="clock" class="live-clock">16:52:10</div>
+                        <div style="margin-top: 24px;">
+                            <span id="temp-val"
+                                style="font-size: 4.5rem; font-weight: 800; color: var(--accent-primary); line-height: 1;">24°C</span>
+                            <span id="condition-txt"
+                                style="display: block; font-size: 1.5rem; color: var(--text-secondary); margin-top: 8px;">Scattered
+                                Clouds</span>
+                        </div>
+                    </div>
+                    <div id="weather-icon-main">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--accent-primary)" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M17.5 19a3.5 3.5 0 0 0 .5-6.91A5 5 0 0 0 8.05 10a4 4 0 0 0 .15 7.91" />
+                            <path d="M12 2v2" />
+                            <path d="m4.93 4.93 1.41 1.41" />
+                            <path d="M22 12h-2" />
+                            <path d="m19.07 4.93-1.41 1.41" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weather-metrics">
+                <div class="metric-card">
+                    <div class="metric-label">Humidity</div>
+                    <div id="humidity-val" class="metric-value">58%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Wind Speed</div>
+                    <div id="wind-val" class="metric-value">12 km/h</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Soil Temp</div>
+                    <div id="soil-temp-val" class="metric-value">22°C</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Precipitation</div>
+                    <div id="precip-val" class="metric-value">10%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="margin: 0;">
+            <h2 style="font-size: 1.2rem;">5-Day Agricultural Forecast</h2>
+            <div class="forecast-row">
+                <div class="forecast-card">
+                    <div class="forecast-day">Mon</div>
+                    <div class="forecast-temp">26°C</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Clear Sky</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Tue</div>
+                    <div class="forecast-temp">25°C</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Partly Cloudy</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Wed</div>
+                    <div class="forecast-temp">23°C</div>
+                    <div style="font-size: 0.7rem; color: var(--accent-primary); margin-top: 4px;">Light Rain</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Thu</div>
+                    <div class="forecast-temp">24°C</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Cloudy</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Fri</div>
+                    <div class="forecast-temp">27°C</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Sunny</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="margin-top: 24px; border-left: 4px solid var(--accent-primary);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="var(--accent-primary)" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <h2 style="font-size: 1.1rem; margin: 0;">System Recommendation</h2>
+            </div>
+            <p>Conditions are ideal for <strong>fertilizer application</strong> due to low wind speed and moderate soil
+                moisture. Avoid irrigation tonight as Wed shows a 45% chance of light showers.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 AgriAdvisory Hub. Built for farmers, by farmers.</p>
+    </footer>
+
+    <script>
+        // Update Live Clock
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+                now.getMinutes().toString().padStart(2, '0') + ':' +
+                now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Simulate Fluctuations
+        setInterval(() => {
+            const wind = Math.floor(Math.random() * 5) + 10;
+            const humidity = Math.floor(Math.random() * 4) + 56;
+            document.getElementById('wind-val').innerText = wind + ' km/h';
+            document.getElementById('humidity-val').innerText = humidity + '%';
+
+            const tempVal = document.getElementById('temp-val');
+            const currentTemp = parseInt(tempVal.innerText);
+            if (Math.random() > 0.8) {
+                tempVal.innerText = (currentTemp + (Math.random() > 0.5 ? 1 : -1)) + '°C';
+            }
+        }, 3000);
+    </script>
+
+</body>
+
+</html>

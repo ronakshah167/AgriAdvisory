@@ -1,6 +1,118 @@
 // Initialize cart from localStorage
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+/* ============================================================
+   COOKIE UTILITY FUNCTIONS
+   setCookie / getCookie / deleteCookie — used across features
+   ============================================================ */
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/";
+}
+
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let c = cookies[i].trim();
+        if (c.indexOf(nameEQ) === 0) {
+            return decodeURIComponent(c.substring(nameEQ.length));
+        }
+    }
+    return null;
+}
+
+function deleteCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+}
+
+/* ============================================================
+   COOKIE CONSENT BANNER
+   Shows on first visit. Stores preference for 365 days.
+   ============================================================ */
+(function initCookieConsent() {
+    const consent = getCookie("cookieConsent");
+
+    // If user already responded, don't show banner
+    if (consent) return;
+
+    const banner = document.createElement("div");
+    banner.className = "cookie-banner";
+    banner.id = "cookie-consent-banner";
+    banner.innerHTML = `
+        <span class="cookie-banner__icon">🍪</span>
+        <div class="cookie-banner__text">
+            <p><strong>We use cookies</strong> to remember your preferences, keep you logged in,
+            and improve your experience on AgriAdvisory Hub. No third-party tracking — just farm-friendly essentials.</p>
+        </div>
+        <div class="cookie-banner__actions">
+            <button class="cookie-btn-accept" id="cookie-accept">Accept All</button>
+            <button class="cookie-btn-decline" id="cookie-decline">Decline</button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+
+    document.getElementById("cookie-accept").addEventListener("click", function () {
+        setCookie("cookieConsent", "accepted", 365);
+        dismissBanner();
+    });
+
+    document.getElementById("cookie-decline").addEventListener("click", function () {
+        setCookie("cookieConsent", "declined", 30);
+        dismissBanner();
+        // If declined, clear any existing farmer name cookie
+        deleteCookie("farmerName");
+    });
+
+    function dismissBanner() {
+        banner.classList.add("hiding");
+        setTimeout(() => banner.remove(), 450);
+    }
+})();
+
+/* ============================================================
+   WELCOME BACK BAR
+   Reads "farmerName" cookie (set after registration).
+   Displays a personalized greeting bar below the navbar.
+   ============================================================ */
+(function initWelcomeBar() {
+    const farmerName = getCookie("farmerName");
+    const consent = getCookie("cookieConsent");
+
+    // Only show if cookies were accepted AND farmer name exists
+    if (!farmerName || consent !== "accepted") return;
+
+    const nav = document.querySelector("nav");
+    if (!nav) return;
+
+    const bar = document.createElement("div");
+    bar.className = "welcome-bar";
+    bar.id = "welcome-bar";
+    bar.innerHTML = `
+        <span>🌾</span>
+        <span>Welcome back, <span class="welcome-bar__name">${farmerName}</span>! Ready to grow?</span>
+        <button class="welcome-bar__dismiss" title="Dismiss" onclick="dismissWelcomeBar()">✕</button>
+    `;
+    nav.insertAdjacentElement("afterend", bar);
+})();
+
+function dismissWelcomeBar() {
+    const bar = document.getElementById("welcome-bar");
+    if (bar) {
+        bar.style.opacity = "0";
+        bar.style.transform = "translateY(-10px)";
+        bar.style.transition = "0.3s ease";
+        setTimeout(() => bar.remove(), 300);
+    }
+}
+window.dismissWelcomeBar = dismissWelcomeBar;
+
+
 // Static product catalogue — shown when the database has no entries
 const STATIC_PRODUCTS = [
     {
@@ -129,6 +241,11 @@ if (registrationForm) {
                 msgEl.innerText = "Registration successful! Welcome to AgriAdvisory Hub.";
                 registrationForm.reset();
                 showToast("Account created successfully.");
+
+                // Save farmer name in a cookie (30-day expiry) for welcome-back greeting
+                if (getCookie("cookieConsent") === "accepted") {
+                    setCookie("farmerName", name, 30);
+                }
             } else {
                 msgEl.innerText = "Registration failed. Please try again.";
                 showToast("Error during registration. Please try again.");
@@ -149,10 +266,22 @@ const prodList = document.getElementById("products");
 const productsEmptyState = document.getElementById("products-empty");
 
 if (prodList) {
-    // Always render the static catalogue with real product images.
-    // The DB fetch is attempted in the background for future integration,
-    // but the static list is always the primary display source.
-    renderProducts(STATIC_PRODUCTS);
+    // Attempt to fetch from database, fall back to static catalogue if needed
+    (async () => {
+        try {
+            const response = await fetch("get_products.php");
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                renderProducts(data);
+            } else {
+                renderProducts(STATIC_PRODUCTS);
+            }
+        } catch (error) {
+            console.error("Database fetch failed, using static catalogue:", error);
+            renderProducts(STATIC_PRODUCTS);
+        }
+    })();
 }
 
 function renderProducts(products) {
@@ -330,5 +459,59 @@ if (orderForm) {
             btn.innerText = originalText;
             btn.disabled = false;
         }
+    };
+}
+
+/* ============================================================
+   SOIL-BASED RECOMMENDATIONS — mock tool logic
+   ============================================================ */
+const soilForm = document.getElementById("soil-calc-form");
+const soilResult = document.getElementById("soil-result-panel");
+
+if (soilForm) {
+    soilForm.onsubmit = function (e) {
+        e.preventDefault();
+
+        const type = document.getElementById("soil-type").value;
+        const ph = parseFloat(document.getElementById("soil-ph").value) || 6.5;
+
+        let crop = "Paddy (Rice)";
+        let desc = "Ideal for alluvial loamy soils with high moisture retention and neutral pH.";
+        let icon = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6-4 4-4-4"/><path d="M12 2v8"/><path d="m20 12-8 8-8-8"/></svg>`;
+
+        if (type === "black") {
+            crop = "Cotton / Soybean";
+            desc = "Black soil (Regur) is rich in clay and moisture, perfect for cotton and soybean crops.";
+            icon = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>`;
+        } else if (type === "red") {
+            crop = "Pulses / Tobacco";
+            desc = "Red soils are porous and friable. Ideal for pulses with proper irrigation and fertilization.";
+            icon = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m5 10 7 7 7-7"/></svg>`;
+        } else if (type === "laterite") {
+            crop = "Tea / Coffee / Cashew";
+            desc = "Laterite soil is acidic and suited for plantation crops like tea and cashews.";
+            icon = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a2 2 0 1 1-4 0 2 2 0 1 1 4 0Z"/><path d="M10 8a2 2 0 1 1-4 0 2 2 0 1 1 4 0Z"/><path d="M7 16a2 2 0 1 0 4 0 2 2 0 1 0-4 0Z"/><path d="M13 16a2 2 0 1 0 4 0 2 2 0 1 0-4 0Z"/></svg>`;
+        } else if (type === "desert") {
+            crop = "Millets / Barley";
+            desc = "Sandy soils have low water retention. Millets and barley are resilient choices.";
+            icon = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M21 12H3"/></svg>`;
+        }
+
+        // Adjust for pH
+        if (ph < 5.5) {
+            desc += " Warning: Soil is acidic. Apply lime before sowing.";
+            crop = "Potatoes / Oats (Acid Tolerant)";
+        } else if (ph > 7.5) {
+            desc += " Warning: Soil is alkaline. Consider sulfur application.";
+            crop = "Barley / Asparagus (Alkali Tolerant)";
+        }
+
+        document.getElementById("soil-result-title").innerText = "Recommended: " + crop;
+        document.getElementById("soil-result-desc").innerText = desc;
+        document.getElementById("soil-result-icon").innerHTML = icon;
+
+        soilResult.style.display = "block";
+        soilResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast("Recommendation generated for " + crop);
     };
 }
