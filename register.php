@@ -19,12 +19,26 @@ if (empty($fullname) || empty($email) || empty($password)) {
     exit;
 }
 
+// Check if user already exists
+$checkUser = $conn->prepare("SELECT id FROM farmers WHERE email = ?");
+$checkUser->bind_param("s", $email);
+$checkUser->execute();
+$checkUser->store_result();
+if ($checkUser->num_rows > 0) {
+    echo "Error: Email already registered";
+    $checkUser->close();
+    exit;
+}
+$checkUser->close();
+
+// Securely hash the password
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
 // Prepare statement for security
 $stmt = $conn->prepare("INSERT INTO farmers (fullname, email, phone, password, address, land_area, service) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 if ($stmt) {
-    // Note: In production, password should be hashed with password_hash()
-    $stmt->bind_param("sssssss", $fullname, $email, $phone, $password, $address, $land, $service);
+    $stmt->bind_param("sssssss", $fullname, $email, $phone, $hashed_password, $address, $land, $service);
 
     if ($stmt->execute()) {
         echo "Success";

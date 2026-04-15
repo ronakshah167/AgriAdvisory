@@ -112,6 +112,19 @@ function dismissWelcomeBar() {
 }
 window.dismissWelcomeBar = dismissWelcomeBar;
 
+// Update navbar for logged in state
+(function updateNav() {
+    const farmerName = getCookie("farmerName");
+    const nav = document.querySelector("nav");
+    if (farmerName && nav) {
+        const loginLink = Array.from(nav.querySelectorAll("a")).find(a => a.innerText.toLowerCase().includes("login"));
+        if (loginLink) {
+            loginLink.innerHTML = `Logout (${farmerName.split(' ')[0]})`;
+            loginLink.href = "javascript:logout()";
+        }
+    }
+})();
+
 
 // Static product catalogue — shown when the database has no entries
 const STATIC_PRODUCTS = [
@@ -258,6 +271,130 @@ if (registrationForm) {
         }
     };
 }
+
+/* ============================================================
+   FARMER LOGIN
+   ============================================================ */
+const loginForm = document.getElementById("login-form");
+
+if (loginForm) {
+    loginForm.onsubmit = async function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("login-email").value.trim();
+        const pass = document.getElementById("login-pass").value;
+        const remember = document.getElementById("remember-me").checked;
+
+        // Loading state
+        const btn = loginForm.querySelector('button[type="submit"]');
+        const originalText = btn.innerText;
+        btn.innerText = "Signing In...";
+        btn.disabled = true;
+
+        try {
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("password", pass);
+
+            const response = await fetch("login.php", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            const msgEl = document.getElementById("msg");
+
+            if (result.status === "success") {
+                showToast("Welcome back, " + result.name + "!");
+
+                // Save identification cookie
+                if (getCookie("cookieConsent") === "accepted" || remember) {
+                    setCookie("farmerName", result.name, remember ? 30 : 1);
+                }
+
+                // Redirect after a short delay
+                setTimeout(() => {
+                    location.href = "index.html";
+                }, 1500);
+            } else {
+                msgEl.innerText = result.message;
+                showToast(result.message);
+            }
+        } catch (error) {
+            showToast("Login failed. Please check your credentials.");
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    };
+}
+
+/* ============================================================
+   PRIVACY SETTINGS
+   ============================================================ */
+const privacyForm = document.getElementById("privacy-form");
+
+if (privacyForm) {
+    // Load existing settings from localStorage
+    const savedSettings = JSON.parse(localStorage.getItem("privacySettings")) || {
+        shareSoil: true,
+        weatherSMS: true,
+        storeCookies: true
+    };
+
+    document.getElementById("share-soil").checked = savedSettings.shareSoil;
+    document.getElementById("weather-sms").checked = savedSettings.weatherSMS;
+    document.getElementById("store-cookies").checked = savedSettings.storeCookies;
+
+    privacyForm.onsubmit = function (e) {
+        e.preventDefault();
+
+        const settings = {
+            shareSoil: document.getElementById("share-soil").checked,
+            weatherSMS: document.getElementById("weather-sms").checked,
+            storeCookies: document.getElementById("store-cookies").checked
+        };
+
+        localStorage.setItem("privacySettings", JSON.stringify(settings));
+
+        if (!settings.storeCookies) {
+            deleteCookie("farmerName");
+            setCookie("cookieConsent", "declined", 30);
+        }
+
+        const msg = document.getElementById("privacy-msg");
+        msg.innerText = "Privacy settings updated successfully!";
+        showToast("Settings Saved.");
+
+        setTimeout(() => msg.innerText = "", 3000);
+    };
+}
+
+const deleteDataBtn = document.getElementById("delete-data-btn");
+if (deleteDataBtn) {
+    deleteDataBtn.onclick = function () {
+        if (confirm("Are you sure? This will delete your local settings and log you out.")) {
+            localStorage.clear();
+            deleteCookie("farmerName");
+            deleteCookie("cookieConsent");
+            showToast("All data cleared.");
+            setTimeout(() => location.href = "index.html", 1000);
+        }
+    };
+}
+
+/* ============================================================
+   LOGOUT FUNCTIONALITY
+   ============================================================ */
+function logout() {
+    deleteCookie("farmerName");
+    // Optionally call a logout.php to destroy server session
+    showToast("Logged out successfully.");
+    setTimeout(() => {
+        location.href = "login.html";
+    }, 1000);
+}
+window.logout = logout;
 
 /* ============================================================
    PRODUCTS — fetch from DB, fall back to static catalogue

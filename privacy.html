@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your data and privacy settings on AgriAdvisory Hub.">
+    <title>Privacy Settings — AgriAdvisory Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="login.html">Login</a>
+        <a href="products.html">Products</a>
+        <a href="advisory.html">Advisory</a>
+        <a href="weather.html">Weather</a>
+        <a href="soil.html">Soil Test</a>
+        <a href="checkout.html">Cart</a>
+        <a href="privacy.html" class="active">Privacy</a>
+    </nav>
+
+    <header class="header-slim">
+        <h1>Privacy Settings</h1>
+        <p>Manage how we use your farm data and personal information</p>
+    </header>
+
+    <div class="section">
+        <h2>Data Preferences</h2>
+        <p style="margin-bottom: 24px;">Transparency is key to a good harvest. Tell us how you want your data handled.
+        </p>
+
+        <form id="privacy-form">
+            <div class="form-group"
+                style="background: var(--bg-glass); padding: 20px; border-radius: var(--radius-md); margin-bottom: 16px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 4px;">Share Soil Data with Scientists</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Allow agricultural experts to view your
+                            soil test results for better community advice.</p>
+                    </div>
+                    <input type="checkbox" id="share-soil" style="width: 24px; height: 24px; margin-top: 4px;" checked>
+                </div>
+            </div>
+
+            <div class="form-group"
+                style="background: var(--bg-glass); padding: 20px; border-radius: var(--radius-md); margin-bottom: 16px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 4px;">Weather Notifications via SMS</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Receive localized weather alerts based
+                            on your farm address.</p>
+                    </div>
+                    <input type="checkbox" id="weather-sms" style="width: 24px; height: 24px; margin-top: 4px;" checked>
+                </div>
+            </div>
+
+            <div class="form-group"
+                style="background: var(--bg-glass); padding: 20px; border-radius: var(--radius-md); margin-bottom: 16px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 4px;">Store Farm Profile Cookies</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Remember your login and farm
+                            preferences for 30 days.</p>
+                    </div>
+                    <input type="checkbox" id="store-cookies" style="width: 24px; height: 24px; margin-top: 4px;"
+                        checked>
+                </div>
+            </div>
+
+            <button type="submit" style="margin-top: 24px;">Save Privacy Settings</button>
+        </form>
+
+        <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-color);">
+            <h4 style="color: #ef4444; margin-bottom: 12px;">Data Deletion</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 16px;">Want to clear all your records from AgriAdvisory Hub?
+                This cannot be undone.</p>
+            <button class="btn-danger" id="delete-data-btn">Delete My Account & Data</button>
+        </div>
+
+        <p id="privacy-msg" style="margin-top: 20px; text-align: center; color: var(--accent-primary);"></p>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 AgriAdvisory Hub. Built for farmers, by farmers.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
