@@ -1,9 +1,4 @@
 <?php
-/**
- * login.php
- * Handles farmer login. Returns JSON with status, name, and farmer_id.
- * Logs login activity to site_activity_log.
- */
 session_start();
 require_once "db_connect.php";
 header("Content-Type: application/json");

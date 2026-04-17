@@ -1,9 +1,4 @@
 <?php
-/**
- * get_advisory.php
- * Returns the list of advisory experts as JSON.
- * Called from advisory.html via fetch.
- */
 require_once "db_connect.php";
 header("Content-Type: application/json");
 

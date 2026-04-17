@@ -1,9 +1,4 @@
 <?php
-/**
- * request_advisory.php
- * Saves a farmer's consultation request to `advisory_requests`.
- * Called from advisory.html via fetch POST.
- */
 require_once "db_connect.php";
 header("Content-Type: application/json");
 
