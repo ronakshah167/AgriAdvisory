@@ -174,3 +174,26 @@ VALUES
   ('Mr. Harjinder Singh',  'Wheat & Rice Cultivation',  'B.Sc. Agriculture, PAU Ludhiana', 16, 'Punjab, Haryana',               'harjinder.singh@agriadvisory.in'),
   ('Dr. Meena Patel',      'Organic Farming & Biochar', 'Ph.D. Agronomy, ANGRAU',           9, 'Gujarat, Rajasthan',            'meena.patel@agriadvisory.in')
 ON DUPLICATE KEY UPDATE name = VALUES(name);
+
+CREATE TABLE IF NOT EXISTS feedback (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    farmer_id INT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    rating INT NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (farmer_id) REFERENCES farmers(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS issues (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    farmer_id INT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    issue_type VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    status VARCHAR(50) DEFAULT 'open',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (farmer_id) REFERENCES farmers(id) ON DELETE SET NULL
+);

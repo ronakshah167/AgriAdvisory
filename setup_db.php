@@ -13,7 +13,7 @@ $pass = "";
 $conn = new mysqli($host, $user, $pass);
 
 if ($conn->connect_error) {
-    die("<b style='color:red'>Connection failed:</b> " . $conn->connect_error);
+  die("<b style='color:red'>Connection failed:</b> " . $conn->connect_error);
 }
 
 $conn->set_charset("utf8mb4");
@@ -22,7 +22,7 @@ $conn->set_charset("utf8mb4");
 $sqlFile = __DIR__ . "/agriadvisory.sql";
 
 if (!file_exists($sqlFile)) {
-    die("<b style='color:red'>Error:</b> agriadvisory.sql not found in project directory.");
+  die("<b style='color:red'>Error:</b> agriadvisory.sql not found in project directory.");
 }
 
 $sql = file_get_contents($sqlFile);
@@ -30,40 +30,73 @@ $sql = file_get_contents($sqlFile);
 // Split on semicolons to run statement by statement
 // (mysqli::multi_query is unreliable with large files; split is safer)
 $statements = array_filter(
-    array_map('trim', explode(';', $sql)),
-    fn($s) => strlen($s) > 0 && !preg_match('/^--/', $s)
+  array_map('trim', explode(';', $sql)),
+  fn($s) => strlen($s) > 0 && !preg_match('/^--/', $s)
 );
 
 $ok = 0;
 $errors = [];
 
 foreach ($statements as $stmt) {
-    if ($conn->query($stmt) === TRUE) {
-        $ok++;
-    } else {
-        // Ignore "already exists" non-critical warnings
-        if (strpos($conn->error, 'already exists') === false) {
-            $errors[] = htmlspecialchars($stmt) . "<br><em style='color:#e9a82f'>" . $conn->error . "</em>";
-        }
+  if ($conn->query($stmt) === TRUE) {
+    $ok++;
+  } else {
+    // Ignore "already exists" non-critical warnings
+    if (strpos($conn->error, 'already exists') === false) {
+      $errors[] = htmlspecialchars($stmt) . "<br><em style='color:#e9a82f'>" . $conn->error . "</em>";
     }
+  }
 }
 
 $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Database Setup — AgriAdvisory Hub</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; max-width: 760px; margin: 60px auto; padding: 0 24px; background: #0e1a0e; color: #d4edda; }
-    h1   { color: #52c07f; }
-    .ok  { background: #1a3a22; border: 1px solid #52c07f; border-radius: 8px; padding: 20px; margin: 20px 0; }
-    .err { background: #3a1a1a; border: 1px solid #ef4444; border-radius: 8px; padding: 20px; margin: 20px 0; }
-    a    { color: #52c07f; }
-    pre  { font-size: 0.8rem; overflow: auto; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 760px;
+      margin: 60px auto;
+      padding: 0 24px;
+      background: #0e1a0e;
+      color: #d4edda;
+    }
+
+    h1 {
+      color: #52c07f;
+    }
+
+    .ok {
+      background: #1a3a22;
+      border: 1px solid #52c07f;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .err {
+      background: #3a1a1a;
+      border: 1px solid #ef4444;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    a {
+      color: #52c07f;
+    }
+
+    pre {
+      font-size: 0.8rem;
+      overflow: auto;
+    }
   </style>
 </head>
+
 <body>
   <h1>🌾 AgriAdvisory Hub — Database Setup</h1>
 
@@ -84,6 +117,8 @@ $conn->close();
         <li>advisory_requests</li>
         <li>cart_sessions</li>
         <li>site_activity_log</li>
+        <li>feedback</li>
+        <li>issues</li>
       </ul>
     </div>
     <p>
@@ -101,4 +136,5 @@ $conn->close();
     <p><a href="index.html">→ Go to Homepage</a></p>
   <?php endif; ?>
 </body>
+
 </html>
