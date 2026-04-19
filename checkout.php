@@ -12,15 +12,15 @@
 <body>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
-        <a href="products.html">Products</a>
-        <a href="advisory.html">Advisory</a>
-        <a href="weather.html">Weather</a>
-        <a href="soil.html">Soil Test</a>
-        <a href="checkout.html" class="active">Cart</a>
-        <a href="privacy.html">Privacy</a>
+        <a href="index.php">Home</a>
+        <a href="register.php">Register</a>
+        <a href="login.php">Login</a>
+        <a href="products.php">Products</a>
+        <a href="advisory.php">Advisory</a>
+        <a href="weather.php">Weather</a>
+        <a href="soil.php">Soil Test</a>
+        <a href="checkout.php" class="active">Cart</a>
+        <a href="privacy.php">Privacy</a>
     </nav>
 
     <header class="header-slim">
@@ -30,7 +30,7 @@
 
     <!-- Empty cart state -->
     <div id="cart-empty" class="section empty-state" style="display:none;">
-        <p>Your cart is empty. <a href="products.html" class="link-accent">Browse products</a></p>
+        <p>Your cart is empty. <a href="products.php" class="link-accent">Browse products</a></p>
     </div>
 
     <!-- Checkout layout — shown when cart has items -->
@@ -98,7 +98,7 @@
         <h2>Order Placed!</h2>
         <p>Thank you. Your order has been received and saved. Our team will contact you shortly.</p>
         <p id="order-ref" class="order-ref"></p>
-        <a href="products.html" class="btn-outline-link">Continue Shopping</a>
+        <a href="products.php" class="btn-outline-link">Continue Shopping</a>
     </div>
 
     <footer>

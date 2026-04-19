@@ -2,7 +2,7 @@
 require_once "db_connect.php";
 header("Content-Type: application/json");
 
-$farmer_id = isset($_POST['farmer_id']) ? intval($_POST['farmer_id']) : null;
+$farmer_id = (!empty($_POST['farmer_id'])) ? intval($_POST['farmer_id']) : null;
 $farmer_name = isset($_POST['farmer_name']) ? trim($_POST['farmer_name']) : '';
 $farmer_phone = isset($_POST['farmer_phone']) ? trim($_POST['farmer_phone']) : '';
 $farmer_email = isset($_POST['farmer_email']) ? trim($_POST['farmer_email']) : '';

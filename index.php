@@ -13,16 +13,16 @@
 <body>
 
   <nav>
-    <a href="index.html" class="active">Home</a>
-    <a href="register.html">Register</a>
-    <a href="login.html">Login</a>
-    <a href="products.html">Products</a>
-    <a href="advisory.html">Advisory</a>
-    <a href="weather.html">Weather</a>
-    <a href="soil.html">Soil Test</a>
-    <a href="checkout.html">Cart</a>
-    <a href="feedback.html">Feedback</a>
-    <a href="privacy.html">Privacy</a>
+    <a href="index.php" class="active">Home</a>
+    <a href="register.php">Register</a>
+    <a href="login.php">Login</a>
+    <a href="products.php">Products</a>
+    <a href="advisory.php">Advisory</a>
+    <a href="weather.php">Weather</a>
+    <a href="soil.php">Soil Test</a>
+    <a href="checkout.php">Cart</a>
+    <a href="feedback.php">Feedback</a>
+    <a href="privacy.php">Privacy</a>
   </nav>
 
   <header style="padding: 0; text-align: left;" class="hero-split">
@@ -34,10 +34,10 @@
       <p style="margin-top:14px; color:var(--text-secondary); max-width:480px; font-size:1.05rem; line-height:1.7;">
         Empowering India's farmers with data-driven crop intelligence and a trusted agricultural marketplace.</p>
       <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px;">
-        <button onclick="location.href='soil.html'" style="padding: 13px 30px; font-size: 0.95rem;">
+        <button onclick="location.href='soil.php'" style="padding: 13px 30px; font-size: 0.95rem;">
           Start Soil Test
         </button>
-        <a href="products.html"
+        <a href="products.php"
           style="padding: 13px 30px; text-decoration: none; color: var(--accent-primary); border: 1px solid var(--accent-primary); border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; transition: 0.2s; display:inline-flex; align-items:center;">
           Shop Marketplace
         </a>
@@ -78,7 +78,7 @@
     <p style="margin-bottom: 32px;">Tools built to maximize yield and minimize chemical risk.</p>
 
     <div class="features">
-      <div class="feature-card" onclick="location.href='soil.html'" style="cursor: pointer;">
+      <div class="feature-card" onclick="location.href='soil.php'" style="cursor: pointer;">
         <div class="feature-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -93,7 +93,7 @@
           now →</span>
       </div>
 
-      <div class="feature-card" onclick="location.href='weather.html'" style="cursor: pointer;">
+      <div class="feature-card" onclick="location.href='weather.php'" style="cursor: pointer;">
         <div class="feature-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -109,7 +109,7 @@
           weather →</span>
       </div>
 
-      <div class="feature-card" onclick="location.href='products.html'" style="cursor: pointer;">
+      <div class="feature-card" onclick="location.href='products.php'" style="cursor: pointer;">
         <div class="feature-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -125,7 +125,7 @@
           shop →</span>
       </div>
 
-      <div class="feature-card" onclick="location.href='advisory.html'" style="cursor: pointer;">
+      <div class="feature-card" onclick="location.href='advisory.php'" style="cursor: pointer;">
         <div class="feature-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -149,7 +149,7 @@
         <p style="margin-top: 12px; color: var(--text-secondary); line-height: 1.7;">Our expert scientists analyze soil
           chemistries and satellite weather data to ensure your farm stays productive, regardless of shifting monsoon
           patterns.</p>
-        <button onclick="location.href='register.html'" style="margin-top: 20px; padding: 12px 32px;">Register Your
+        <button onclick="location.href='register.php'" style="margin-top: 20px; padding: 12px 32px;">Register Your
           Farm</button>
       </div>
       <div>
@@ -175,9 +175,9 @@
 
   <footer>
     <div style="margin-bottom: 15px;">
-      <a href="feedback.html">Give Feedback</a> |
-      <a href="report_issue.html">Report Issue</a> |
-      <a href="privacy.html">Privacy Policy</a>
+      <a href="feedback.php">Give Feedback</a> |
+      <a href="report_issue.php">Report Issue</a> |
+      <a href="privacy.php">Privacy Policy</a>
     </div>
     <p>&copy; 2026 AgriAdvisory Hub. Built for farmers, by farmers.</p>
   </footer>

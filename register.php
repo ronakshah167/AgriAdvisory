@@ -1,85 +1,94 @@
-<?php
-/**
- * register.php
- * Handles farmer registration. Saves to `farmers` table, creates default privacy settings,
- * and logs the activity to `site_activity_log`.
- */
-require_once "db_connect.php";
-header("Content-Type: text/plain");
+<!DOCTYPE html>
+<html lang="en">
 
-$fullname = isset($_POST['fullname']) ? trim($_POST['fullname']) : '';
-$email = isset($_POST['email']) ? trim($_POST['email']) : '';
-$phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-$password = isset($_POST['password']) ? $_POST['password'] : '';
-$address = isset($_POST['address']) ? trim($_POST['address']) : '';
-$land = isset($_POST['land']) ? floatval($_POST['land']) : 0;
-$service = isset($_POST['service']) ? trim($_POST['service']) : '';
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Register your farm on AgriAdvisory Hub for personalized advisory and crop consultation.">
+    <title>Register — AgriAdvisory Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-// Basic validation
-if (empty($fullname) || empty($email) || empty($password)) {
-    echo "Error: Missing required fields";
-    exit;
-}
+<body>
 
-// Check duplicate email
-$checkUser = $conn->prepare("SELECT id FROM farmers WHERE email = ?");
-$checkUser->bind_param("s", $email);
-$checkUser->execute();
-$checkUser->store_result();
-if ($checkUser->num_rows > 0) {
-    echo "Error: Email already registered";
-    $checkUser->close();
-    exit;
-}
-$checkUser->close();
+    <nav>
+        <a href="index.php">Home</a>
+        <a href="register.php" class="active">Register</a>
+        <a href="login.php">Login</a>
+        <a href="products.php">Products</a>
+        <a href="advisory.php">Advisory</a>
+        <a href="weather.php">Weather</a>
+        <a href="soil.php">Soil Test</a>
+        <a href="checkout.php">Cart</a>
+        <a href="feedback.php">Feedback</a>
+        <a href="privacy.php">Privacy</a>
+    </nav>
 
-// Hash password
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    <header class="header-slim">
+        <h1>Farmer Registration</h1>
+        <p>Create your profile and unlock advisory services</p>
+    </header>
 
-// Insert farmer
-$stmt = $conn->prepare(
-    "INSERT INTO farmers (fullname, email, phone, password, address, land_area, service)
-     VALUES (?, ?, ?, ?, ?, ?, ?)"
-);
+    <div class="section">
+        <h2>Create Your Account</h2>
 
-if ($stmt) {
-    $stmt->bind_param("ssssdss", $fullname, $email, $phone, $hashed_password, $address, $land, $service);
+        <form id="form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
 
-    if ($stmt->execute()) {
-        $farmer_id = $stmt->insert_id;
-        $stmt->close();
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
 
-        // --- Create default privacy settings row ---
-        $priv = $conn->prepare(
-            "INSERT IGNORE INTO farmer_privacy_settings (farmer_id, share_soil_data, weather_sms, store_cookies)
-             VALUES (?, 1, 1, 1)"
-        );
-        if ($priv) {
-            $priv->bind_param("i", $farmer_id);
-            $priv->execute();
-            $priv->close();
-        }
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" placeholder="+91 XXXXX XXXXX" required>
+            </div>
 
-        // --- Log registration ---
-        $action = 'register';
-        $meta = json_encode(["farmer_id" => $farmer_id, "service" => $service]);
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-        $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
-        $log = $conn->prepare("INSERT INTO site_activity_log (farmer_id, action, meta, ip_address, user_agent) VALUES (?, ?, ?, ?, ?)");
-        if ($log) {
-            $log->bind_param("issss", $farmer_id, $action, $meta, $ip, $ua);
-            $log->execute();
-            $log->close();
-        }
+            <div class="form-group">
+                <label for="pass">Password</label>
+                <input type="password" id="pass" placeholder="Minimum 8 characters" required>
+            </div>
 
-        echo "Success";
-    } else {
-        echo "Error: " . $stmt->error;
-        $stmt->close();
-    }
-} else {
-    echo "Error: Database preparation failed";
-}
+            <div class="form-group">
+                <label for="address">Farm Address</label>
+                <textarea id="address" placeholder="Village, Taluka, District, State" required></textarea>
+            </div>
 
-$conn->close();
-?>
+            <div class="form-group">
+                <label for="land">Land Area (acres)</label>
+                <input type="number" id="land" placeholder="e.g. 5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Service Needed</label>
+                <select id="service">
+                    <option>Soil Testing</option>
+                    <option>Crop Consultation</option>
+                </select>
+            </div>
+
+            <button type="submit" style="margin-top: 16px;">Register Now</button>
+        </form>
+
+        <p id="msg"></p>
+    </div>
+
+    <footer>
+        <div style="margin-bottom: 15px;">
+            <a href="feedback.php">Give Feedback</a> |
+            <a href="report_issue.php">Report Issue</a> |
+            <a href="privacy.php">Privacy Policy</a>
+        </div>
+        <p>&copy; 2026 AgriAdvisory Hub. Built for farmers, by farmers.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -12,15 +12,15 @@
 <body>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
-        <a href="products.html">Products</a>
-        <a href="advisory.html">Advisory</a>
-        <a href="weather.html">Weather</a>
-        <a href="soil.html">Soil Test</a>
-        <a href="checkout.html">Cart</a>
-        <a href="privacy.html" class="active">Privacy</a>
+        <a href="index.php">Home</a>
+        <a href="register.php">Register</a>
+        <a href="login.php">Login</a>
+        <a href="products.php">Products</a>
+        <a href="advisory.php">Advisory</a>
+        <a href="weather.php">Weather</a>
+        <a href="soil.php">Soil Test</a>
+        <a href="checkout.php">Cart</a>
+        <a href="privacy.php" class="active">Privacy</a>
     </nav>
 
     <header class="header-slim">

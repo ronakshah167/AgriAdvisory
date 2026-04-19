@@ -87,16 +87,16 @@
 <body>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
-        <a href="products.html">Products</a>
-        <a href="advisory.html" class="active">Advisory</a>
-        <a href="weather.html">Weather</a>
-        <a href="soil.html">Soil Test</a>
-        <a href="checkout.html">Cart</a>
-        <a href="feedback.html">Feedback</a>
-        <a href="privacy.html">Privacy</a>
+        <a href="index.php">Home</a>
+        <a href="register.php">Register</a>
+        <a href="login.php">Login</a>
+        <a href="products.php">Products</a>
+        <a href="advisory.php" class="active">Advisory</a>
+        <a href="weather.php">Weather</a>
+        <a href="soil.php">Soil Test</a>
+        <a href="checkout.php">Cart</a>
+        <a href="feedback.php">Feedback</a>
+        <a href="privacy.php">Privacy</a>
     </nav>
 
     <header class="header-slim">
@@ -202,9 +202,9 @@
 
     <footer>
         <div style="margin-bottom: 15px;">
-            <a href="feedback.html">Give Feedback</a> |
-            <a href="report_issue.html">Report Issue</a> |
-            <a href="privacy.html">Privacy Policy</a>
+            <a href="feedback.php">Give Feedback</a> |
+            <a href="report_issue.php">Report Issue</a> |
+            <a href="privacy.php">Privacy Policy</a>
         </div>
         <p>&copy; 2026 AgriAdvisory Hub. Built for farmers, by farmers.</p>
     </footer>

@@ -11,7 +11,7 @@ $address = isset($_POST['address']) ? trim($_POST['address']) : '';
 $items = isset($_POST['items']) ? $_POST['items'] : '';
 $total = isset($_POST['total']) ? floatval($_POST['total']) : 0;
 $payment_mode = isset($_POST['payment_mode']) ? trim($_POST['payment_mode']) : 'Cash on Delivery';
-$farmer_id = isset($_POST['farmer_id']) ? intval($_POST['farmer_id']) : null;
+$farmer_id = (!empty($_POST['farmer_id'])) ? intval($_POST['farmer_id']) : null;
 
 // Validation
 if (empty($customer_name) || empty($phone) || empty($address) || empty($items) || $total <= 0) {

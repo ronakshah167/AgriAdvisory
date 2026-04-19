@@ -61,16 +61,16 @@
 <body>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
-        <a href="products.html">Products</a>
-        <a href="advisory.html">Advisory</a>
-        <a href="weather.html">Weather</a>
-        <a href="soil.html" class="active">Soil Test</a>
-        <a href="checkout.html">Cart</a>
-        <a href="feedback.html">Feedback</a>
-        <a href="privacy.html">Privacy</a>
+        <a href="index.php">Home</a>
+        <a href="register.php">Register</a>
+        <a href="login.php">Login</a>
+        <a href="products.php">Products</a>
+        <a href="advisory.php">Advisory</a>
+        <a href="weather.php">Weather</a>
+        <a href="soil.php" class="active">Soil Test</a>
+        <a href="checkout.php">Cart</a>
+        <a href="feedback.php">Feedback</a>
+        <a href="privacy.php">Privacy</a>
     </nav>
 
     <header class="header-slim">
@@ -149,10 +149,10 @@
                 </div>
 
                 <div style="margin-top: 24px; display: flex; gap: 10px;">
-                    <a href="products.html" class="btn-outline-link"
+                    <a href="products.php" class="btn-outline-link"
                         style="display:inline-block; text-decoration:none; padding: 9px 20px; border: 1px solid var(--accent-primary); color: var(--accent-primary); border-radius: 6px; font-weight: 600; font-size: 0.82rem;">View
                         Suitable Seeds</a>
-                    <a href="advisory.html"
+                    <a href="advisory.php"
                         style="display:inline-block; text-decoration:none; padding: 9px 20px; background: rgba(45, 106, 79, 0.06); color: var(--text-primary); border-radius: 6px; font-weight: 500; font-size: 0.82rem;">Farming
                         Guide</a>
                 </div>
@@ -162,9 +162,9 @@
 
     <footer>
         <div style="margin-bottom: 15px;">
-            <a href="feedback.html">Give Feedback</a> |
-            <a href="report_issue.html">Report Issue</a> |
-            <a href="privacy.html">Privacy Policy</a>
+            <a href="feedback.php">Give Feedback</a> |
+            <a href="report_issue.php">Report Issue</a> |
+            <a href="privacy.php">Privacy Policy</a>
         </div>
         <p>&copy; 2026 AgriAdvisory Hub. Built for farmers, by farmers.</p>
     </footer>

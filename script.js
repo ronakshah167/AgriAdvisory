@@ -233,7 +233,7 @@ if (registrationForm) {
         btn.disabled = true;
 
         try {
-            const response = await fetch("register.php", {
+            const response = await fetch("register_handler.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: [
@@ -261,7 +261,7 @@ if (registrationForm) {
                     // farmer_id comes back in a separate header or we auto-login;
                     // for registration we keep it minimal and redirect to login
                 }
-                setTimeout(() => location.href = "login.html", 1800);
+                setTimeout(() => location.href = "login.php", 1800);
             } else {
                 msgEl.innerText = "Registration failed. Please try again.";
                 showToast("Error during registration. Please try again.");
@@ -299,7 +299,7 @@ if (loginForm) {
             formData.append("email", email);
             formData.append("password", pass);
 
-            const response = await fetch("login.php", {
+            const response = await fetch("login_handler.php", {
                 method: "POST",
                 body: formData
             });
@@ -321,7 +321,7 @@ if (loginForm) {
 
                 // Redirect after a short delay
                 setTimeout(() => {
-                    location.href = "index.html";
+                    location.href = "index.php";
                 }, 1500);
             } else {
                 msgEl.innerText = result.message;
@@ -407,7 +407,7 @@ if (deleteDataBtn) {
             deleteCookie("farmerName");
             deleteCookie("cookieConsent");
             showToast("All data cleared.");
-            setTimeout(() => location.href = "index.html", 1000);
+            setTimeout(() => location.href = "index.php", 1000);
         }
     };
 }
@@ -420,7 +420,7 @@ function logout() {
     // Optionally call a logout.php to destroy server session
     showToast("Logged out successfully.");
     setTimeout(() => {
-        location.href = "login.html";
+        location.href = "login.php";
     }, 1000);
 }
 window.logout = logout;

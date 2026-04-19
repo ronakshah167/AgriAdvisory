@@ -1,34 +1,35 @@
 <?php
 /**
  * AgriAdvisory Hub — Database Setup Runner
- * Reads and executes agriadvisory.sql to create all tables and seed data.
+ * Reads and executes agriadvisory_clean.sql to create all tables and seed data.
  * Visit: http://localhost/agriadvisoryhub/setup_db.php
  */
 
-$host = "localhost";
+$host = "127.0.0.1";
 $user = "root";
 $pass = "";
+$dbname = "agriadvisory_v2";
 
-// Connect without selecting a DB first (SQL file does it)
+// Connect and create DB if it doesn't exist
 $conn = new mysqli($host, $user, $pass);
-
 if ($conn->connect_error) {
   die("<b style='color:red'>Connection failed:</b> " . $conn->connect_error);
 }
 
+$conn->query("CREATE DATABASE IF NOT EXISTS $dbname CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+$conn->select_db($dbname);
 $conn->set_charset("utf8mb4");
 
-// Read the SQL file
-$sqlFile = __DIR__ . "/agriadvisory.sql";
+// Read the clean SQL file
+$sqlFile = __DIR__ . "/agriadvisory_clean.sql";
 
 if (!file_exists($sqlFile)) {
-  die("<b style='color:red'>Error:</b> agriadvisory.sql not found in project directory.");
+  die("<b style='color:red'>Error:</b> agriadvisory_clean.sql not found in project directory.");
 }
 
 $sql = file_get_contents($sqlFile);
 
 // Split on semicolons to run statement by statement
-// (mysqli::multi_query is unreliable with large files; split is safer)
 $statements = array_filter(
   array_map('trim', explode(';', $sql)),
   fn($s) => strlen($s) > 0 && !preg_match('/^--/', $s)
@@ -98,12 +99,12 @@ $conn->close();
 </head>
 
 <body>
-  <h1>🌾 AgriAdvisory Hub — Database Setup</h1>
+  <h1>🌾 AgriAdvisory Hub — Database Setup (v2)</h1>
 
   <?php if (empty($errors)): ?>
     <div class="ok">
       <strong>✅ Setup Complete!</strong><br>
-      All <?= $ok ?> SQL statements executed successfully.<br><br>
+      All <?= $ok ?> SQL statements executed successfully in <code>agriadvisory_v2</code>.<br><br>
       <strong>Tables created:</strong>
       <ul>
         <li>farmers</li>
@@ -122,8 +123,8 @@ $conn->close();
       </ul>
     </div>
     <p>
-      <a href="http://localhost/phpmyadmin/index.php?db=agriadvisory">→ View in phpMyAdmin</a><br>
-      <a href="index.html">→ Go to Homepage</a>
+      <a href="http://localhost/phpmyadmin/index.php?db=agriadvisory_v2">→ View in phpMyAdmin</a><br>
+      <a href="index.php">→ Go to Homepage</a>
     </p>
   <?php else: ?>
     <div class="ok">
@@ -133,7 +134,7 @@ $conn->close();
       <strong>⚠️ Some statements had errors:</strong>
       <pre><?= implode("<br><br>", $errors) ?></pre>
     </div>
-    <p><a href="index.html">→ Go to Homepage</a></p>
+    <p><a href="index.php">→ Go to Homepage</a></p>
   <?php endif; ?>
 </body>
 

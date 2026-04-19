@@ -2,12 +2,12 @@
 /**
  * save_soil_test.php
  * Saves a soil test result to the soil_tests table.
- * Called from soil.html via fetch POST.
+ * Called from soil.php via fetch POST.
  */
 require_once "db_connect.php";
 header("Content-Type: application/json");
 
-$farmer_id = isset($_POST['farmer_id']) ? intval($_POST['farmer_id']) : null;
+$farmer_id = (!empty($_POST['farmer_id'])) ? intval($_POST['farmer_id']) : null;
 $soil_type = isset($_POST['soil_type']) ? trim($_POST['soil_type']) : '';
 $ph_value = isset($_POST['ph_value']) ? floatval($_POST['ph_value']) : null;
 $nitrogen_mg_kg = isset($_POST['nitrogen_mg_kg']) ? floatval($_POST['nitrogen_mg_kg']) : null;

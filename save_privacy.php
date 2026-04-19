@@ -2,7 +2,7 @@
 /**
  * save_privacy.php
  * Saves a farmer's privacy settings to `farmer_privacy_settings`.
- * Called from privacy.html via fetch POST.
+ * Called from privacy.php via fetch POST.
  */
 require_once "db_connect.php";
 header("Content-Type: application/json");

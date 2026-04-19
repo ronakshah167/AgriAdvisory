@@ -42,16 +42,16 @@
 <body>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
-        <a href="products.html">Products</a>
-        <a href="advisory.html">Advisory</a>
-        <a href="weather.html">Weather</a>
-        <a href="soil.html">Soil Test</a>
-        <a href="checkout.html">Cart</a>
-        <a href="feedback.html" class="active">Feedback</a>
-        <a href="privacy.html">Privacy</a>
+        <a href="index.php">Home</a>
+        <a href="register.php">Register</a>
+        <a href="login.php">Login</a>
+        <a href="products.php">Products</a>
+        <a href="advisory.php">Advisory</a>
+        <a href="weather.php">Weather</a>
+        <a href="soil.php">Soil Test</a>
+        <a href="checkout.php">Cart</a>
+        <a href="feedback.php" class="active">Feedback</a>
+        <a href="privacy.php">Privacy</a>
     </nav>
 
     <header class="header-slim">
@@ -95,8 +95,8 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 AgriAdvisory Hub. <a href="report_issue.html">Report an Issue</a> | <a
-                href="privacy.html">Privacy Policy</a></p>
+        <p>&copy; 2026 AgriAdvisory Hub. <a href="report_issue.php">Report an Issue</a> | <a
+                href="privacy.php">Privacy Policy</a></p>
     </footer>
 
     <script>
